@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://www.aireadfun.com
+title: AireadFan's
+subtitle: Fragments of memories
+author: Airead Fan
 simple_search: http://google.com/search
-description:
+description: linux
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
@@ -17,9 +17,9 @@ date_format: "ordinal"
 
 # RSS / Email (optional) subscription links (change if using something like Feedburner)
 subscribe_rss: /atom.xml
-subscribe_email:
+subscribe_email: fgh1987168@gmail.com
 # RSS feeds can list your email address if you like
-email:
+email: fgh1987168@gmail.com
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -49,9 +49,9 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/twitter.ht
 
 # Each layout uses the default asides, but they can have their own asides instead. Simply uncomment the lines below
 # and add an array with the asides you want to use.
-# blog_index_asides:
-# post_asides:
-# page_asides:
+blog_index_asides: [custom/asides/about.html, asides/recent_posts.html]
+post_asides: [custom/asides/about.html, asides/recent_posts.html, ]
+page_asides: [custom/asides/about.html, asides/recent_posts.html, ]
 
 # ----------------------- #
 #   3rd Party Settings    #
@@ -89,8 +89,8 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
-disqus_show_comment_count: false
+disqus_short_name: aireadfun
+disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id:
