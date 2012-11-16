@@ -94,6 +94,7 @@ disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id: UA-36391700-1
+google_analytics_domain_name: aireadfun.com
 
 # Facebook Like
 facebook_like: false
