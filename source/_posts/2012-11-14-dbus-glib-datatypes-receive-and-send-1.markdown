@@ -8,6 +8,7 @@ categories: dbus-glib
 ## 动机
 说到 **DBus** 用过的人大概都能明白其工作的流程。典型的使用流程是，向 DBus 服务进程发送数据，然后接收其返回的数据。简单的说，就像调用函数一样，向服务进程发送数据就相当于函数的参数，其返回的数据就相当于函数返回的结果。虽然明白了流程，但想要使用 **C语言** 通过已有的 DBus 服务进行操作，仍然是一项不太容易的工作（对像我这样的菜鸟 ^_^ ），因为数据的类型真是太多了, 使用 **Python** 会简单一点。简单点的有 **Boolean**, **Byte**, **Int32**, **Int64**, **String**, **ObjectPath**, **Signature** 等; 复杂一点的有 **Array**, **Struct**, **Dict** 等。如果不能弄清楚它们之间的联系，那么将是一件非常头痛的事。为了使我研究的结果不被淡忘，于是有了这篇文章。
 
+<!--more-->
 ## 前置知识
  - 能够熟练使用 C语言；
  - 了解 DBus 各数据类型的表示, 参考 [D-Bus Specification](http://dbus.freedesktop.org/doc/dbus-specification.html)
@@ -17,6 +18,7 @@ categories: dbus-glib
  - 简单了解 python dbus
 
 对了，编译的时候要加上 dbus-glib 库，在本篇的最后会给出一个 Makefile 文件，把它放到要编译的文件的目录下，直接 make 应该就可以了，感觉说的不清楚，不过懂的话应该是懂的(-_-b)
+
 ## Python DBus 的简单演示
 ### Python DBus 服务进程
 使用 Python 编写 DBus 服务进程是比较舒心的一件事。那么废话不多说，先来一个 "1+1=2" 的例子

@@ -11,6 +11,7 @@ categories: emacs
 vi ~/.emacs 或 emacs ~/.emacs
 {% endcodeblock %}
 
+<!--more-->
 ## 将以下函数粘贴到你的.emacs文件内
 {% codeblock lang:cl %}
 ;;Highlight #if 0 to #endif

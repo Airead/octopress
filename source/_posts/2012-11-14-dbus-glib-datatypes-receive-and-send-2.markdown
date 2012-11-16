@@ -9,6 +9,8 @@ categories: dbus-glib
 上一篇讨论了基本的数据类型的传递，这次我们就讨论难一点的， **高级数据类型** 的传递。这里我们会讨论四种高级的（也就是难一点的）数据类型的传递： ARRAY, STRUCT, DICT_ENTRY, VARIANT， 具体请参照 [D-Bus Specification](http://dbus.freedesktop.org/doc/dbus-specification.html)。
 
 同样先给出 Python 编写的服务与测试（这次没有 shell 脚本了）。
+<!--more-->
+
 ## Python DBus 服务进程  
 {% include_code dbus/advanced_data_deliver_service.py %}
 

@@ -9,6 +9,7 @@ categories: dbus-glib
 上一篇讨论了高级数据类型的传递，这次我们就讨论更难一点的， **复杂数据类型** 的传递。为什么说复杂呢？因为它是高级数据类型的杂揉，本来高级数据类型就挺难的了，再杂揉一下，不用活了。
 
 同样先给出 Python 编写的服务与测试
+<!--more-->
 ## Python DBus 服务进程  
 {% include_code dbus/more_advanced_data_deliver_service.py %}
 
