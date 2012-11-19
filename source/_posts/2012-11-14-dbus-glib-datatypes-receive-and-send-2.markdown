@@ -234,7 +234,7 @@ int send_recv_variant(DBusGProxy *proxy)
 }
 {% endcodeblock %}
 
-###* 使用 VARINAT 传递 INT_ARRAY
+#### 使用 VARINAT 传递 INT_ARRAY
 重点就是如何将 INT_ARRAY 装入 GValue 中。这里的办法是，先产生一个容器，然后从容器中获取指针进行赋值。试这个的时候费了我老大劲了-_-!。注意，服务进程返回的是 DICT_ENTRY 类型的数据。
 
 {% codeblock lang:c %}
@@ -282,7 +282,7 @@ int send_recv_variant_int_array(DBusGProxy *proxy, char *method)
 }
 {% endcodeblock %}
 
-###* 使用 VARINAT 传递 INT_STRUCT
+#### 使用 VARINAT 传递 INT_STRUCT
 重点就是如何将 STRUCT 装入 GValue 中。这里出现了构造 STRUCT 的第二种方法。注意，服务进程返回的是 DICT_ENTRY 类型的数据。
 
 {% codeblock lang:c %}
