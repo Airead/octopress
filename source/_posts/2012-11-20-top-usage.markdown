@@ -1,0 +1,12 @@
+---
+layout: post
+title: "top usage"
+date: 2012-11-20 16:58
+comments: true
+published: false
+categories: linux-tools
+---
+
+### sort by memory usage
+F or O: Select sort field  
+R: normal/reverse sort

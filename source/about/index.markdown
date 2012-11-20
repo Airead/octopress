@@ -9,4 +9,5 @@ footer: false
 
 Airead Fan
 
-E-mail: fgh1987168 (at) gmail (dot) com
+E-mail: 
+`echo -e '#define cat(c,d) c##.d \n #define mb(a,b) a##@b \n mb(fgh1987168,cat(gmail,com))' | gcc -E -xc - 2>/dev/null |tail -n 1`
