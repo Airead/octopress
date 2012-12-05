@@ -210,7 +210,7 @@ If no accident, make will products src/lib/libutils.a and src/person/summary whi
 ## Change Default CFLAGS For Debug
 autoconf default CFLAGS is '-g -O2', it is inconvenient to debug program. How to change this?  
 Macro `AC_PROG_CC` in configure.ac determines a C compiler to use. If using the GNU C compiler, set shell variable GCC to 'yes'. If output variable CFLAGS was not already set, set it to '-g -O2' for the GNU C compiler ('-O2' on systems where GCC does not accept '-g'), or '-g' for other compilers.  
-Put `CFLAGS=xxxx` on the front of `AC_PROG_CC`, then  
+Put `CFLAGS=-g -O0` on the front of `AC_PROG_CC`, then  
 `airead@airead:/tmp/summary-1.0.0$ autoreconf`  
 It works well.  
 **note:** There is no space on either side of `=`.
