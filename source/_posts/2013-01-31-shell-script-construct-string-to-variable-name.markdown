@@ -24,14 +24,18 @@ done
 
 The script will print:
 
-    10
-    20
-    30
+<code>
+10
+20
+30
+</code>
 
 Note the `echo ${!vname}`. if it change to `echo ${name}` and will just print:
 
-    a1
-    a2
-    a3
+<code>
+a1
+a2
+a3
+</code>
 
 That's the difference. The **`!'** construct string to variable name.
