@@ -3,7 +3,7 @@ layout: post
 title: "shell script construct string to variable name"
 date: 2013-01-31 11:30
 comments: true
-categories: 
+categories: shell
 ---
 
 This post shows how to access shell variable via a name, which created by a string. Ok, let's see the code straight:
