@@ -3,7 +3,7 @@ layout: post
 title: "what is rcu, Fundamentally?"
 date: 2013-01-15 15:16
 comments: true
-categories: 
+categories: kernel
 ---
 
 ## Introduction
