@@ -127,21 +127,21 @@ enum nf_ct_ext_id
 
 最后 call update_alloc_size(type); 对 type->alloc_size 进行最后的更新.
 
-after nf_conntrack_init_init_net(), let's step into nf_conntrack_init_net(net). 它主要是对 net->ct 这个结构进行初使化.
-1. 初始化 hlist_nulls_head net->ct.unconfirmed 和 net->ct.dying, 
-2. alloc_percpu for net->ct.stat
-3. set net->ct.slabname
-4. create net->ct.nf_conntrack_cachep
-5. set hash table size, net->ct.hash_size
-6. create hash table, net->ct.hash
-7. nf_conntrack_expect_init(net);
-8. nf_conntrack_acct_init(net);
-9. nf_conntrack_ecache_init(net);
+after nf_conntrack_init_init_net(), let's step into nf_conntrack_init_net(net). 它主要是对 struct netns_ct net->ct 这个结构进行初使化.  
+1. 初始化 hlist_nulls_head net->ct.unconfirmed 和 net->ct.dying,   
+2. alloc_percpu for net->ct.stat  
+3. set net->ct.slabname  
+4. create net->ct.nf_conntrack_cachep  
+5. set hash table size, net->ct.hash_size  
+6. create hash table, net->ct.hash  
+7. nf_conntrack_expect_init(net);  
+8. nf_conntrack_acct_init(net);  
+9. nf_conntrack_ecache_init(net);  
 
-`nf_conntrack_expect_init` 
-1. 算出 nf_conntrack_except_hsize
-2. create hash table by kmem_cache_create()
-3. generate proc files
+`nf_conntrack_expect_init`   
+1. 算出 nf_conntrack_except_hsize  
+2. create hash table by kmem_cache_create()  
+3. generate proc files  
 
 acct 与 ecache 跟以前提到的 nf_conntrack_helper_init 相似.
 
@@ -265,4 +265,71 @@ static struct nf_hook_ops ipv4_conntrack_ops[] __read_mostly = {
 };
 {% endcodeblock %}
 
-它在4个 hook 点挂载了3个函数, 从而完成了整个 conntrack 工作. 关于如何写 netfilter 模块,参考[Writing Netﬁlter modules](http://inai.de/documents/Netfilter_Modules.pdf). 
+它在4个 hook 点挂载了3个函数, 从而完成了整个 conntrack 工作. 
+ - ipv4_conntrack_in() 调用 nf_conntrack_in() 
+ - ipv4_conntrack_local() 调用 nf_conntrack_in(), 参数不同
+ - ipv4_confirm() 经过前期处理后调用 nf_conntrack_confirm() 进行最后的确认
+ 
+关于如何写 netfilter 模块,参考[Writing Netﬁlter modules](http://inai.de/documents/Netfilter_Modules.pdf). 
+
+## ipv4_conntrack_in, ipv4_confirm
+接下来我们重点来看 ipv4_conntrack_in() 与 ipv4_confirm()
+### ipv4_conntrack_in
+简单的调用了 nf_conntrack_in(struct net *net, u_int8_t pf, unsigned int hooknum, struct sk_buff *skb), 有四个参数 net, pf, hooknum, skb。  
+  1. 判断 skb->nfct 是否存在，如果存在的话有两个作法：
+    a. ct is template 则返回 NF_ACCEPT.
+    b. ct is not template 则令 skb->nfct = NULL, 继续函数余下的操作。
+  2. 获取三层协议操作指针
+  3. 获到四层协议操作指针，并调用 .error(), 如果有。
+  4. 有一个对 icmp[v6] 的一个特殊处理，它们分配一个 conntrack struct
+  5. 调用 reslove_normal_ct 来获取一个 conntrack 指针，同时设置 skb->nfct. 也就是说过了 nf_conntrack_in 的 skb 都已经有了 nfct, 有了它的 conntrack 指针。好幸福，不是么？
+  6. 检查返回的 ct 的各种错误
+  7. 设定超时策略
+  8. 调用 .packet(ct, skb, dataoff, ctinfo, pf, hooknum, timeouts); 函数
+  9. 调用 nf_conntrack_event_cache(IPCT_REPLY, ct);
+  10. 跟据各种状态决定是否释放 struct nf_conn *tmpl
+
+#### reslove_normal_ct
+reslove_normal_ct()都做了些什么呢？  
+  1. 获取 tuple, 实际上就是 srcip, dstip, sport, dport 等等。分别调用了对应协议的 pkt_to_tuple。
+  2. 获取 hash = hash_conntrack_raw(&tuple, zone); 其调用 jhash2()
+  3. 获取一个 struct nf_conntrack_tuple_hash，如果不存在则分配一个。
+  4. 获取与 tuple 相关的 nf_conn
+  5. 根据数据包不同的方向设置 cinfo 和 set_reply 的状态
+  6. 设置 skb->nfct 和 skb->nfctinfo
+
+##### init_conntrack
+  1. 根据 tuple 获取 repl_tuple
+  2. 分配一个 nf_conn
+  3. 检查 nf_conn 错误
+  4. 设置 timeout
+  5. 调用协议中 .new 设置 nf_conn 信息
+  6. 为 nf_conn 添加各种 extend
+  7. 判断是否是 expected 连接
+  8. 将新分配的 nf_conntrack 添加到 net->ct.unconfirmed 中
+  9. 返回 nf_conntrack_tuple_hash
+  
+###### __nf_conntrack_alloc
+  1. net->ct.count 原子加一
+  2. conntrack table 满了就丢弃
+  3. 从 kmem_cache 中获取一个 nf_conn
+  4. 为 nf_conn 设置 orgin/reply 的 tuple, 将 hash 保存在 pprev 里。 设置超时和 struct net
+  5. nf_conn 计数加1
+
+### ipv4_confirm
+  1. 各种条件的判断
+  2. 调用 nf_conntrack_confirm
+
+#### nf_conntrack_confirm
+  没有标记 untracked 也没有 confirmed 的话，就调用 __nf_conntrack_confirm(skb)
+
+##### __nf_conntrack_confirm
+  1. 获取 ct, net, zone  
+  2. 获取 hash 和 repl_hash  
+  3. 判断 ct 是否为 dying 状态  
+  4. 判断 net->ct.hash[hash] 和 hash[repl_hash] 中是否有与 orig/repl tuple 相同的 tuple (可能被 nat 抢占), 有的话就把包丢弃  
+  5. 设置 ct 与时间相关的东西  
+  6. 将 hash/repl_hash 分别插入到 net->ct.hash[hash] 与 net->ct.hash[repl_hash] 列表中去  
+  7. 更新统计信息及剩余工作  
+
+
