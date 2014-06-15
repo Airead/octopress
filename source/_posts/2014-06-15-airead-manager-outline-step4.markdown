@@ -7,6 +7,7 @@ categories: airead-manager
 ---
 
 后端创建一个数据库 model
+<!-- more -->
 
 ## 创建 Person Model
 在 `model` 中创建 `person.py` 文件

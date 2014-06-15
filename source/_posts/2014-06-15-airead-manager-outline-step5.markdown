@@ -7,6 +7,7 @@ categories: airead-manager
 ---
 
 添加增删改查 restful 接口
+<!-- more -->
 
 ## 添加 rest 接口
 在 `blueprints/rest` 中创建文件 `persons.py`, 注意这里有`s`

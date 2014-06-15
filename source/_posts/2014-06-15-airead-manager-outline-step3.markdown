@@ -7,6 +7,7 @@ categories: airead-manager
 ---
 
 前端显示后端内容
+<!-- more -->
 
 ## 修改 controller
 修改 `static/coffee/controllers/world.coffee` 为

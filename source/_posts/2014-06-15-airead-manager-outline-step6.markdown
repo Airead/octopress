@@ -7,6 +7,7 @@ categories: airead-manager
 ---
 
 前端与后端交互
+<!-- more -->
 
 ## 修改 world.coffee
 为 `world.coffee` 增加增删改查函数，如下

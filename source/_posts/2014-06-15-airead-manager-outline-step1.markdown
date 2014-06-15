@@ -7,6 +7,7 @@ categories: airead-manager
 ---
 
 添加一个新的后端接口
+<!-- more -->
 
 ## 框架结构
 ```

@@ -7,6 +7,7 @@ categories: airead-manager
 ---
 
 添加一个前端接口
+<!-- more -->
 
 ## 创建一个 controller
 在 `static/coffee/controllers/` 创建文件 `world.coffee`.

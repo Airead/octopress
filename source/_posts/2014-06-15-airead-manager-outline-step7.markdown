@@ -8,6 +8,8 @@ categories: airead-manager
 
 添加权限限制
 
+<!-- more -->
+
 ## 后端添加新加权限
 在 `utils/permission.py` 中添加三行，增加 `hello` 权限。
 ```
