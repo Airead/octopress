@@ -72,4 +72,4 @@ categories: airead-manager
     - 内容：添加新的 example 权限，对 restful 进行限制
     - 重点掌握：如何添加一个权限，如何使用权限
 
-`git checkout example` 准备开始学习
+`git checkout step0` 准备开始学习
